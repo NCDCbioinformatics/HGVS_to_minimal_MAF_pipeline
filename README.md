@@ -12,8 +12,8 @@ HGVS로 minimal MAF를 만들기 위한 pipeline
    - 파이썬3, pandas, requests 설치
 
 # 사용법:
-   chmod +x excel_to_minimal_maf_vep_singlefile.sh \
-   ./excel_to_minimal_maf_vep_singlefile.sh minimal_maf_test_normalized.xlsx [sheet] [threads]
+   chmod +x minimal_maf_vep_hg38tohg19_V.1.0.0.sh \
+   ./minimal_maf_vep_hg38tohg19_V.1.0.0.sh minimal_maf_test_normalized.xlsx [sheet] [threads]
 
 
 # 입력 엑셀에 필요한 컬럼:
