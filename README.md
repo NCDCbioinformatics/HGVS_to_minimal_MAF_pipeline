@@ -19,7 +19,7 @@ Pipeline for creating minimal MAF with HGVS
 # Columns required for input Excel:
    - sample ID \
    - Gene \
-   - HGVSc        (ex: c.422G>A) \
+   - HGVSc        (ex: c.422G>A, Requirements) \
    - HGVSp        (ex: p.Cys141Tyr) \
    - HGVSp_short  (ex: p.C141Y) \
 
