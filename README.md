@@ -12,8 +12,8 @@ Pipeline for creating minimal MAF with HGVS
    - Install Python 3, pandas, and requests
 
 # How to use:
-   chmod +x minimal_maf_vep_hg38tohg19_V.1.0.0.sh \
-   ./minimal_maf_vep_hg38tohg19_V.1.0.0.sh minimal_maf_test_normalized.xlsx [sheet] [threads]
+   chmod +x minimal_maf_vep_hg38tohg19_V.1.0.3.sh \
+   ./minimal_maf_vep_hg38tohg19_V.1.0.3.sh minimal_maf_test_normalized.xlsx [sheet] [threads] [hg19 fasta path]
 
 
 # Columns required for input Excel:
