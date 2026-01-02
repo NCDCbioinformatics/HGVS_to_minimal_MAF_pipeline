@@ -1,5 +1,6 @@
 # HGVS-to-minimal-MAF pipeline
 Pipeline for creating minimal MAF with HGVS
+<img width="2406" height="1335" alt="image" src="https://github.com/user-attachments/assets/d6bc0b5c-e1d6-41dc-911c-a5b7843fec6d" />
 
 # outline:
    - Using the HGVS (HGVSc) information in Excel \
