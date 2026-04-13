@@ -23,4 +23,14 @@ Pipeline for creating minimal MAF with HGVS
    - HGVSc        (ex: c.422G>A, Requirements) \
    - HGVSp        (ex: p.Cys141Tyr) \
    - HGVSp_short  (ex: p.C141Y) \
+## Publication context
 
+This repository is a component of the CURE-NGS panel harmonization framework described in the manuscript \"Multi-Institutional Harmonization Framework for Heterogeneous Panel-Based NGS in Precision Oncology.\"
+
+Umbrella repository: https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework
+
+## Software metadata
+
+- Operating system(s): Linux; Windows users can run supported workflows via WSL where needed
+- Programming language(s): Bash shell, Python
+- License: MIT License
