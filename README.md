@@ -1,33 +1,46 @@
-# HGVS-to-minimal-MAF pipeline
-Pipeline for creating minimal MAF with HGVS
-<img width="2406" height="1335" alt="image" src="https://github.com/user-attachments/assets/d6bc0b5c-e1d6-41dc-911c-a5b7843fec6d" />
+# HGVS_to_minimal_MAF_pipeline
 
-# outline:
-   - Using the HGVS (HGVSc) information in Excel \
-     First, annotate GRCh37 VEP, if that doesn't work, then annotate GRCh38 VEP \
-     Converting GRCh38→GRCh37 coordinates using Ensembl assembly map API \
-     Finally, all generate minimal MAF based on GRCh37 (hg19) coordinates
+Utilities for converting spreadsheet HGVS annotations into a minimal MAF-style table.
 
-# Requirements:
-   - Available at https://grch37.rest.ensembl.org and https://rest.ensembl.org \
-   - Install Python 3, pandas, and requests
-
-# How to use:
-   chmod +x minimal_maf_vep_hg38tohg19_V.1.0.3.sh \
-   ./minimal_maf_vep_hg38tohg19_V.1.0.3.sh minimal_maf_test_normalized.xlsx [sheet] [threads] [hg19 fasta path]
-
-
-# Columns required for input Excel:
-   - sample ID \
-   - Gene \
-   - HGVSc        (ex: c.422G>A, Requirements) \
-   - HGVSp        (ex: p.Cys141Tyr) \
-   - HGVSp_short  (ex: p.C141Y) \
-## Publication context
+## Repository role
 
 This repository is a component of the CURE-NGS panel harmonization framework described in the manuscript "Multi-Institutional Harmonization Framework for Heterogeneous Panel-Based NGS in Precision Oncology."
 
 Umbrella repository: https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework
+
+## Available workflows
+
+- `scripts/hgvs_to_minimal_maf.py`: Python entrypoint for Excel-to-minimal-MAF conversion
+- `scripts/run_hgvs_to_minimal_maf.sh`: shell wrapper for command-line execution
+- `scripts/minimal_maf_vep_hg38tohg19_V.1.0.3.sh`: legacy workflow snapshot
+
+## Quick start
+
+```bash
+bash scripts/run_hgvs_to_minimal_maf.sh input.xlsx output.tsv 0 8
+```
+
+## Required input columns
+
+- `sample ID`
+- `Gene`
+- `HGVSc`
+- `HGVSp`
+- `HGVSp_short`
+
+## Requirements
+
+- Linux or WSL
+- Python 3
+- `pandas`
+- `requests`
+- Access to [grch37.rest.ensembl.org](https://grch37.rest.ensembl.org) and [rest.ensembl.org](https://rest.ensembl.org)
+
+## Notes
+
+- The workflow prefers GRCh37 annotations first.
+- If only GRCh38 annotations are available, it falls back to Ensembl assembly mapping from GRCh38 to GRCh37.
+- Output is written as a tab-delimited minimal MAF-style table.
 
 ## Software metadata
 
