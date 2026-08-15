@@ -2,6 +2,24 @@
 
 Utilities for converting spreadsheet HGVS annotations into a minimal MAF-style table.
 
+> **Reviewer and new-user deployment:** use the supported, version-pinned
+> [CURE-NGS Docker/OCI distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework#reviewer-quick-start).
+> It provides a portable CLI, offline replay of frozen Ensembl REST responses,
+> manifests, and automated tests spanning all six component functions.
+
+## Reproducible installation and test data
+
+- [Clean-machine installation](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/INSTALLATION.md)
+- [GRCh37 reference and annotation-resource setup](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REFERENCE_DATA.md)
+- [HGVS/report-route commands](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/COMMAND_REFERENCE.md#structured-hgvs-or-report-derived-route)
+- [Network-free reviewer walkthrough](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REVIEWER_REPRODUCTION.md)
+- [Synthetic inputs and frozen REST fixture](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/tree/main/examples/synthetic)
+
+The latest audited historical release is
+`minimal_maf_vep_hg38tohg19_V.1.0.3`. Its tag, commit, release assets, and
+SHA-256 digests are locked in the umbrella repository. GRCh37/hg19 remains the
+default target; GRCh38 input is converted only when required.
+
 ## Repository role
 
 This repository is a component of the CURE-NGS panel harmonization framework described in the manuscript "Multi-Institutional Harmonization Framework for Heterogeneous Panel-Based NGS in Precision Oncology."
