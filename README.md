@@ -1,67 +1,89 @@
 # HGVS_to_minimal_MAF_pipeline
 
-Utilities for converting spreadsheet HGVS annotations into a minimal MAF-style table.
+Structured or report-derived HGVS annotation to minimal-MAF conversion
+component of the CURE-NGS panel harmonization framework.
 
-> **Reviewer and new-user deployment:** use the supported, version-pinned
-> [CURE-NGS Docker/OCI distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework#reviewer-quick-start).
-> It provides a portable CLI, offline replay of frozen Ensembl REST responses,
-> manifests, and automated tests spanning all six component functions.
+> **Supported deployment:** reviewers and new users should install the unified
+> [CURE-NGS Docker/OCI distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework).
+> This repository preserves historical component provenance. The single
+> container package belongs to the umbrella repository, so **No packages
+> published** in this component repository is expected.
 
-## Reproducible installation and test data
+## Role in the unified project
 
-- [Clean-machine installation](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/INSTALLATION.md)
-- [GRCh37 reference and annotation-resource setup](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REFERENCE_DATA.md)
-- [HGVS/report-route commands](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/COMMAND_REFERENCE.md#structured-hgvs-or-report-derived-route)
-- [Network-free reviewer walkthrough](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REVIEWER_REPRODUCTION.md)
-- [Synthetic inputs and frozen REST fixture](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/tree/main/examples/synthetic)
+| Item | Value |
+| --- | --- |
+| Historical responsibility | HGVS spreadsheet/report conversion to minimal MAF |
+| Supported command | `cure-ngs hgvs-table-to-minimal-maf` |
+| Latest audited component release | `minimal_maf_vep_hg38tohg19_V.1.0.3` |
+| Default output assembly | GRCh37/hg19; GRCh38 is explicitly supported |
 
-The latest audited historical release is
-`minimal_maf_vep_hg38tohg19_V.1.0.3`. Its tag, commit, release assets, and
-SHA-256 digests are locked in the umbrella repository. GRCh37/hg19 remains the
-default target; GRCh38 input is converted only when required.
+## Install the supported Docker distribution
 
-## Repository role
-
-This repository is a component of the CURE-NGS panel harmonization framework described in the manuscript "Multi-Institutional Harmonization Framework for Heterogeneous Panel-Based NGS in Precision Oncology."
-
-Umbrella repository: https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework
-
-## Available workflows
-
-- `scripts/hgvs_to_minimal_maf.py`: Python entrypoint for Excel-to-minimal-MAF conversion
-- `scripts/run_hgvs_to_minimal_maf.sh`: shell wrapper for command-line execution
-- `scripts/minimal_maf_vep_hg38tohg19_V.1.0.3.sh`: legacy workflow snapshot
-
-## Quick start
+1. Install [Docker Desktop](https://docs.docker.com/desktop/) on Windows/macOS
+   or [Docker Engine](https://docs.docker.com/engine/install/) on Linux.
+2. Build the core image from the canonical repository:
 
 ```bash
-bash scripts/run_hgvs_to_minimal_maf.sh input.xlsx output.tsv 0 8
+git clone https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
+cd cure-ngs-panel-harmonization-framework
+docker build --file docker/Dockerfile.core --tag cure-ngs-harmonizer:0.1.0-core .
 ```
 
-## Required input columns
+After the umbrella repository publishes release `0.1.0`, it can instead be
+downloaded with:
 
-- `sample ID`
-- `Gene`
-- `HGVSc`
-- `HGVSp`
-- `HGVSp_short`
+```bash
+docker pull ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.1.0-core
+```
 
-## Requirements
+Use the source build while the umbrella **Packages** panel says
+`No packages published`.
 
-- Linux or WSL
-- Python 3
-- `pandas`
-- `requests`
-- Access to [grch37.rest.ensembl.org](https://grch37.rest.ensembl.org) and [rest.ensembl.org](https://rest.ensembl.org)
+## Verify and run this capability
 
-## Notes
+The bundled example replays a frozen synthetic Ensembl response with container
+networking disabled:
 
-- The workflow prefers GRCh37 annotations first.
-- If only GRCh38 annotations are available, it falls back to Ensembl assembly mapping from GRCh38 to GRCh37.
-- Output is written as a tab-delimited minimal MAF-style table.
+```bash
+bash scripts/run_reviewer_demo.sh
+```
 
-## Software metadata
+The component-specific command used by that test is:
 
-- Operating system(s): Linux; Windows users can run supported workflows via WSL where needed
-- Programming language(s): Bash shell, Python
-- License: MIT License
+```bash
+mkdir -p output
+chmod 0777 output  # Linux: writable by the image's non-root UID 10001
+docker run --rm --network none \
+  --volume "$PWD/examples:/examples:ro" \
+  --volume "$PWD/output:/data/output" \
+  cure-ngs-harmonizer:0.1.0-core hgvs-table-to-minimal-maf \
+  /examples/synthetic/hgvs_to_minimal_input.tsv \
+  /data/output/minimal.grch37.maf \
+  --failed /data/output/failed.tsv \
+  --reference-fasta /examples/synthetic/tiny.grch37.fa \
+  --assembly GRCh37 \
+  --response-cache /examples/synthetic/rest-cache --offline-replay
+```
+
+For institutional data, replace the miniature synthetic FASTA with an exact
+GRCh37 reference and retain the generated manifest and REST cache.
+
+## Historical standalone workflows
+
+- `scripts/hgvs_to_minimal_maf.py`: historical Python entry point
+- `scripts/run_hgvs_to_minimal_maf.sh`: historical shell wrapper
+- `scripts/minimal_maf_vep_hg38tohg19_V.1.0.3.sh`: release snapshot
+
+Required input fields are `sample ID`, `Gene`, `HGVSc`, `HGVSp`, and
+`HGVSp_short`. The consolidated implementation records failures instead of
+silently choosing ambiguous mappings.
+
+## Documentation and test data
+
+- [Project structure](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/PROJECT_STRUCTURE.md)
+- [HGVS/report route commands](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/COMMAND_REFERENCE.md#structured-hgvs-or-report-derived-route)
+- [Synthetic HGVS and frozen REST fixtures](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/tree/main/examples/synthetic)
+- [Reference-data policy](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REFERENCE_DATA.md)
+
+License: MIT. No CURE-NGS patient-level data are distributed here.
