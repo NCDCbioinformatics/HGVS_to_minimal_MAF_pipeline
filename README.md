@@ -22,23 +22,24 @@ component of the CURE-NGS panel harmonization framework.
 
 1. Install [Docker Desktop](https://docs.docker.com/desktop/) on Windows/macOS
    or [Docker Engine](https://docs.docker.com/engine/install/) on Linux.
-2. Build the core image from the canonical repository:
+2. Pull the public, version-pinned core image:
 
 ```bash
-git clone https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
+docker pull ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.3-core
+```
+
+The image is public and does not require a GitHub login. To build the identical
+release from source instead:
+
+```bash
+git clone --branch v0.2.3 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
 cd cure-ngs-panel-harmonization-framework
-docker build --file docker/Dockerfile.core --tag cure-ngs-harmonizer:0.1.0-core .
+docker build --file docker/Dockerfile.core --tag cure-ngs-harmonizer:0.2.3-core .
 ```
 
-After the umbrella repository publishes release `0.1.0`, it can instead be
-downloaded with:
-
-```bash
-docker pull ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.1.0-core
-```
-
-Use the source build while the umbrella **Packages** panel says
-`No packages published`.
+The component repository itself intentionally shows **No packages published**;
+the supported package is the umbrella repository's audited
+[`v0.2.3` distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/releases/tag/v0.2.3).
 
 ## Verify and run this capability
 
@@ -46,6 +47,8 @@ The bundled example replays a frozen synthetic Ensembl response with container
 networking disabled:
 
 ```bash
+git clone --branch v0.2.3 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
+cd cure-ngs-panel-harmonization-framework
 bash scripts/run_reviewer_demo.sh
 ```
 
@@ -57,7 +60,8 @@ chmod 0777 output  # Linux: writable by the image's non-root UID 10001
 docker run --rm --network none \
   --volume "$PWD/examples:/examples:ro" \
   --volume "$PWD/output:/data/output" \
-  cure-ngs-harmonizer:0.1.0-core hgvs-table-to-minimal-maf \
+  ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.3-core \
+  hgvs-table-to-minimal-maf \
   /examples/synthetic/hgvs_to_minimal_input.tsv \
   /data/output/minimal.grch37.maf \
   --failed /data/output/failed.tsv \
@@ -85,5 +89,6 @@ silently choosing ambiguous mappings.
 - [HGVS/report route commands](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/COMMAND_REFERENCE.md#structured-hgvs-or-report-derived-route)
 - [Synthetic HGVS and frozen REST fixtures](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/tree/main/examples/synthetic)
 - [Reference-data policy](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/main/docs/REFERENCE_DATA.md)
+- [Clean public-image validation](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/actions/runs/33350796468)
 
 License: MIT. No CURE-NGS patient-level data are distributed here.
