@@ -20,26 +20,33 @@ component of the CURE-NGS panel harmonization framework.
 
 ## Install the supported Docker distribution
 
+The supported unified version is 0.2.6. For image-only installation,
+self-tests without a host Python/Git environment, and the required external
+reference data, see the
+[Docker-only quickstart](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/blob/v0.2.6/docs/DOCKER_ONLY_QUICKSTART.md).
+The core image performs this component's offline tutorial; real VEP
+annotation requires the full image and a matched external FASTA/cache.
+
 1. Install [Docker Desktop](https://docs.docker.com/desktop/) on Windows/macOS
    or [Docker Engine](https://docs.docker.com/engine/install/) on Linux.
 2. Pull the public, version-pinned core image:
 
 ```bash
-docker pull ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.3-core
+docker pull ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.6-core
 ```
 
 The image is public and does not require a GitHub login. To build the identical
 release from source instead:
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
+git clone --branch v0.2.6 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
 cd cure-ngs-panel-harmonization-framework
-docker build --file docker/Dockerfile.core --tag cure-ngs-harmonizer:0.2.3-core .
+docker build --file docker/Dockerfile.core --tag cure-ngs-harmonizer:0.2.6-core .
 ```
 
 The component repository itself intentionally shows **No packages published**;
 the supported package is the umbrella repository's audited
-[`v0.2.3` distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/releases/tag/v0.2.3).
+[`v0.2.6` distribution](https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework/releases/tag/v0.2.6).
 
 ## Verify and run this capability
 
@@ -47,7 +54,7 @@ The bundled example replays a frozen synthetic Ensembl response with container
 networking disabled:
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
+git clone --branch v0.2.6 --depth 1 https://github.com/NCDCbioinformatics/cure-ngs-panel-harmonization-framework.git
 cd cure-ngs-panel-harmonization-framework
 bash scripts/run_reviewer_demo.sh
 ```
@@ -60,7 +67,7 @@ chmod 0777 output  # Linux: writable by the image's non-root UID 10001
 docker run --rm --network none \
   --volume "$PWD/examples:/examples:ro" \
   --volume "$PWD/output:/data/output" \
-  ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.3-core \
+  ghcr.io/ncdcbioinformatics/cure-ngs-harmonizer:0.2.6-core \
   hgvs-table-to-minimal-maf \
   /examples/synthetic/hgvs_to_minimal_input.tsv \
   /data/output/minimal.grch37.maf \
